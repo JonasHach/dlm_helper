@@ -1,11 +1,11 @@
-#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 """This module provides functions which are used in DLM notebooks
 
-
-    Latest changes: 24.07.2023
+    Version: 0.1.0
+    Latest changes: 25.07.2023
     Author: Jonas Hachmeister
 """
+
 from typing import Union, List, Tuple, Optional
 
 import datetime
@@ -14,9 +14,10 @@ import itertools
 import numpy as np
 from numpy.typing import ArrayLike
 import xarray as xr
-
 import statsmodels.api as sm
+
 from dlm_helper.dlm_data import DLMResult, DLMResultList
+
 
 def model_selection_bias_AMI(results: DLMResultList, percentile: int = 25, 
                          years: ArrayLike = None):
@@ -25,7 +26,7 @@ def model_selection_bias_AMI(results: DLMResultList, percentile: int = 25,
 
     This function computes the model selection bias for AMIs for the given DLMResultList. The bias is calculated by
     computing the weighted variance between the average fit AMI and each individual fit AMI for each year. 
-    The bias is calculated for using all models whose aggregate metric is within the specified percentile. 
+    The bias is calculated using all models whose aggregate metric is within the specified percentile. 
 
     Parameters:
         results (DLMResultList): A DLMResultList object containing a list of DLM results.
@@ -78,7 +79,7 @@ def model_selection_bias_trend(results: DLMResultList, percentile: int = 25):
 
     This function computes the model selection bias for growth rates for the given DLMResultsList. The bias is calculated by
     computing the weighted variance between the average fit trend (growth rate) and each individual fit trend. 
-    The bias is calculated for using all models whose aggregate metric is within the specified percentile. 
+    The bias is calculated using all models whose aggregate metric is within the specified percentile. 
 
     Parameters:
         results (DLMResultList): A DLMResultList object containing a list of DLM results.
@@ -132,8 +133,10 @@ def mean_from_date(d1: int ,m1: int ,y1: int ,d2: int ,m2: int ,y2: int , X: Arr
         float: Mean of the values in X that fall within the specified date range.
 
     """
+    
     date_min=(datetime.datetime(y1,m1,d1) - datetime.datetime(1970,1,1)).days
     date_max=(datetime.datetime(y2,m2,d2) - datetime.datetime(1970,1,1)).days
+    
     return np.nanmean(X[(d>=date_min) & (d<=date_max)])
 
 def vmr_increase(d1: int, m1: int, y1: int, d2: int, m2: int, y2: int, L: ArrayLike, d: ArrayLike) -> float:
@@ -205,14 +208,13 @@ def vmr_std_increase(d1: int ,m1: int ,y1: int ,d2: int ,m2: int ,y2: int
     return out  
 
 
-def annual_vmr_increase(year: int, data: DLMResult, month: int =  None) -> Tuple[float, float]:
+def annual_vmr_increase(year: int, data: DLMResult) -> Tuple[float, float]:
     """Calculate annual increase  and standard deviation in volume mixing ratio
         for a given DLMResult object.
 
     Parameters:
         year (int): the year for which the increase is calculated.
         data (DLMResult): a DLMResult object gained from read_dlm_results.
-        use_ar (bool): If True, use level+AR component for calculation
 
     Returns:
         Tuple[float, float]: a tuple containing the annual increase and 
@@ -222,12 +224,9 @@ def annual_vmr_increase(year: int, data: DLMResult, month: int =  None) -> Tuple
     inc_std = -999
     
     if data.time_unit == "day":
-        if month is not None:
-            date_min = (datetime.datetime(year, month, 1) - datetime.datetime(1970, 1, 1)).days
-            date_max = (datetime.datetime(year+1, month, 1) - datetime.datetime(1970, 1, 1)).days
-        else:
-            date_min = (datetime.datetime(year, 1, 1) - datetime.datetime(1970, 1, 1)).days
-            date_max = (datetime.datetime(year, 12, 31) - datetime.datetime(1970, 1, 1)).days
+       
+        date_min = (datetime.datetime(year, 1, 1) - datetime.datetime(1970, 1, 1)).days
+        date_max = (datetime.datetime(year, 12, 31) - datetime.datetime(1970, 1, 1)).days
         try:
             t = data.time
             l = data.level
@@ -267,7 +266,7 @@ def annual_vmr_increase(year: int, data: DLMResult, month: int =  None) -> Tuple
 def get_monthly_vmr(vmr: ArrayLike, date_min: Union[int, datetime.datetime], 
                     date_max: Union[int, datetime.datetime], 
                     year_range: tuple = (2018, 2023)) -> Tuple[np.ndarray, np.ndarray]:
-    """Calculate monthly volume mixing ration (vmr) for a given time range
+    """Calculate monthly volume mixing ration (vmr) from daily vmr data for a given time range
 
     Parameters:
         vmr (array_like): an array of vmr values.
@@ -281,6 +280,7 @@ def get_monthly_vmr(vmr: ArrayLike, date_min: Union[int, datetime.datetime],
     Returns:
         Tuple[numpy.ndarray, numpy.ndarray]: a tuple containing arrays of dates and vmr values.
     """
+    
     vmr = np.asarray(vmr)
     if type(date_min)==datetime.datetime:
         date_min = (date_min - datetime.datetime(1970, 1, 1)).days
@@ -388,6 +388,7 @@ def inhomogeneity_temporal(lat: ArrayLike, lon: ArrayLike, time: ArrayLike, N: A
         with shape (lat.shape[0], lon.shape[0], 3).
         The last dimension contains three values inhomogeneity, asymmetry component, and entropy component
     """
+    
     lat = np.asarray(lat)
     lon = np.asarray(lon)
     time = np.asarray(time)
@@ -425,6 +426,7 @@ def area_perc(theta1: float, theta2: float) -> float:
     Returns:
         float: The percentage of surface area between theta1 and theta2.
     """
+    
     # Ensure theta2 is greater than theta1
     if theta2 <= theta1:
         _theta = theta1
@@ -455,6 +457,7 @@ def weighted_vmr_average(vmr: ArrayLike, sdev: ArrayLike, lats: ArrayLike, lons:
     Returns:
     Tuple[np.ndarray, np.ndarray]: The weighted  mean and standard deviation
     """
+    
     vmr = np.asarray(vmr)
     sdev = np.asarray(sdev)
     lats = np.asarray(lats)

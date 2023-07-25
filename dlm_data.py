@@ -7,7 +7,8 @@ This module provides two classes which are used to handle data from DLM results.
 - DLMResult: Handles single results
 - DLMResultList: Acts as a container for all DLMResults generated for a given time series
 
-Latest changes: 24.07.2023
+Version: 0.1.0
+Latest changes: 25.07.2023
 Author: Jonas Hachmeister
 """
 
