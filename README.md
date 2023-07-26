@@ -1,4 +1,5 @@
 # dlm_helper
+
 This package includes functions and custom data types to help with performing and analyzing dynamic linear model fits. 
 
 The initial version of this code was developed for the analysis performed in 'Zonal variability of methane trends derived from satellite data' (Hachmeister et al., 2023 ; DOI outstanding).
@@ -12,6 +13,10 @@ This package is also used by the supplementary example code provided for the abo
 - matplotlib
 - statsmodels
 - tabulate
+
+## Version
+
+v0.1.0 [![DOI](https://zenodo.org/badge/670216850.svg)](https://zenodo.org/badge/latestdoi/670216850)
 
 ## Installation
 
