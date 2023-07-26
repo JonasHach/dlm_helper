@@ -2,7 +2,7 @@
 """This module provides functions which are used in DLM notebooks
 
     Version: 0.1.0
-    Latest changes: 25.07.2023
+    Latest changes: 26.07.2023
     Author: Jonas Hachmeister
 """
 
@@ -13,7 +13,7 @@ import itertools
 
 import numpy as np
 from numpy.typing import ArrayLike
-import xarray as xr
+
 import statsmodels.api as sm
 
 from dlm_helper.dlm_data import DLMResult, DLMResultList
@@ -592,7 +592,7 @@ def dlm_ensemble(
     for h, a, t, st, l, sl, s, sp, ss,i in itertools.product(harmonics,ar, trend, stochastic_trend, level, stochastic_level, seas, seas_period, stochastic_seas, irregular):
         
         model = sm.tsa.UnobservedComponents(vmr,level=l, trend=t,freq_seasonal=[{'period': sp,'harmonics':h}], autoregressive=a, stochastic_level=sl, stochastic_trend=st, stochastic_freq_seasonal=[ss],irregular=i)
-        result = model.fit()    
+        result = model.fit(disp=0)    
         resobj=DLMResult.create(name,product_type, time, result,time_unit,data_pre=data_pre, data_post=data_post,grid=grid,ht_lim=ht_lim, hs_lim=hs_lim, scale_lat=scale_lat, scale_lon=scale_lon, score=scores)
         out.append(resobj)
 

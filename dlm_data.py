@@ -8,17 +8,18 @@ This module provides two classes which are used to handle data from DLM results.
 - DLMResultList: Acts as a container for all DLMResults generated for a given time series
 
 Version: 0.1.0
-Latest changes: 25.07.2023
+Latest changes: 26.07.2023
 Author: Jonas Hachmeister
 """
-
-from dataclasses import dataclass, fields, asdict
-from typing import List
 import tarfile
 import os
 import json
-import numpy as np
 import datetime as dt
+
+from dataclasses import dataclass, fields, asdict
+from typing import List
+
+import numpy as np
 import matplotlib.pyplot as plt
 from tabulate import tabulate
 
