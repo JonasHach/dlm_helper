@@ -17,6 +17,7 @@ import os
 import json
 import datetime as dt
 
+
 from dataclasses import dataclass, fields, asdict, field
 from typing import Union, List, Tuple, Optional
 
@@ -734,5 +735,6 @@ class DLMResultList:
                 # create a DLMResult object from the dictionary
                 result = DLMResult(**result_dict)
                 # append the result to the list
+                result.timeseries = TimeSeries(**result.timeseries)
                 results.append(result)
         return cls(results=results)            

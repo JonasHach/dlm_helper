@@ -11,6 +11,7 @@ from typing import Union, List, Tuple, Optional
 import warnings
 import datetime
 import itertools
+import copy
 
 import numpy as np
 from numpy.typing import ArrayLike
@@ -29,6 +30,36 @@ def dlm_fit(timeseries: TimeSeries, name: str = None, level: bool = True,
             variable_seasonal: List[bool] = [False],
             autoregressive: int = 1, irregular: bool = True
            ):
+    """
+    Performs a dynamic linear model fit on the given TimeSeries object and
+    returns a DLMResult object.
+    
+    :param timeseries: TimeSeries:
+    :param name: str:  (Default value = None)
+    :param level: bool:  (Default value = True)
+    :param variable_level: bool:  (Default value = False)
+    :param trend: bool:  (Default value = True)
+    :param variable_trend: bool:  (Default value = True)
+    :param seasonal: bool:  (Default value = True)
+    :param seasonal_period: List[float]:  (Default value = [365])
+    :param seasonal_harmonics: List[int]:  (Default value = [4])
+    :param variable_seasonal: List[bool]:  (Default value = [False])
+    :param autoregressive: int:  (Default value = 1)
+    :param irregular: bool:  (Default value = True)
+    :param timeseries: TimeSeries: 
+    :param name: str:  (Default value = None)
+    :param level: bool:  (Default value = True)
+    :param variable_level: bool:  (Default value = False)
+    :param trend: bool:  (Default value = True)
+    :param variable_trend: bool:  (Default value = True)
+    :param seasonal: bool:  (Default value = True)
+    :param seasonal_period: List[float]:  (Default value = [365])
+    :param seasonal_harmonics: List[int]:  (Default value = [4])
+    :param variable_seasonal: List[bool]:  (Default value = [False])
+    :param autoregressive: int:  (Default value = 1)
+    :param irregular: bool:  (Default value = True)
+
+    """
     
     if seasonal:
         fs = []
@@ -53,6 +84,12 @@ def dlm_fit(timeseries: TimeSeries, name: str = None, level: bool = True,
     return DLMResult.create(name,timeseries, result)
 
 def _create_folds(data,n=10):
+    """
+    
+    :param data: param n:  (Default value = 10)
+    :param n:  (Default value = 10)
+
+    """
     idxs = np.floor(np.linspace(0, data.size-1,n+1,endpoint=True)
                    ).astype(np.int_)
     out = []
@@ -81,11 +118,51 @@ def cv_dlm_ensemble(
     scores: dict = None,
     folds: int = 5
     ) -> Tuple[DLMResultList, dict]:
+    """
+
+    :param timeseries: TimeSeries:
+    :param name: str:
+    :param level: List[bool]:  (Default value = [True])
+    :param variable_level: List[bool]:  (Default value = [False])
+    :param trend: List[bool]:  (Default value = [True])
+    :param variable_trend: List[bool]:  (Default value = [True])
+    :param seasonal: List[bool]:  (Default value = [True])
+    :param seasonal_period: List[List[float]]:  (Default value = [[365]])
+    :param seasonal_harmonics: List[List[List[int]]]:  (Default value = [[[1)
+    :param 2: param 3:
+    :param 4: param variable_seasonal: List[List[List[bool]]]:  (Default value = [[[True)
+    :param False: param autoregressive: List[int]:  (Default value = [1])
+    :param irregular: List[bool]:  (Default value = [False)
+    :param True: param scores: dict:  (Default value = None)
+    :param folds: int:  (Default value = 5)
+    :param timeseries: TimeSeries: 
+    :param name: str: 
+    :param level: List[bool]:  (Default value = [True])
+    :param variable_level: List[bool]:  (Default value = [False])
+    :param trend: List[bool]:  (Default value = [True])
+    :param variable_trend: List[bool]:  (Default value = [True])
+    :param seasonal: List[bool]:  (Default value = [True])
+    :param seasonal_period: List[List[float]]:  (Default value = [[365]])
+    :param seasonal_harmonics: List[List[List[int]]]:  (Default value = [[[1)
+    :param 3: 
+    :param 4]]]: 
+    :param variable_seasonal: List[List[List[bool]]]:  (Default value = [[[True)
+    :param False]]]: 
+    :param autoregressive: List[int]:  (Default value = [1])
+    :param irregular: List[bool]:  (Default value = [False)
+    :param True]: 
+    :param scores: dict:  (Default value = None)
+    :param folds: int:  (Default value = 5)
+
+    """
+    
+    timeseries = copy.deepcopy(timeseries)
     
     data = _create_folds(timeseries.data, n = folds)
     
     ensembles = []
     for _fold, _train in data:
+        timeseries.data = _train
         rlist = dlm_ensemble(timeseries, name, level, variable_level, trend,
                              variable_trend, seasonal, seasonal_period,
                              seasonal_harmonics, variable_seasonal,
@@ -93,7 +170,7 @@ def cv_dlm_ensemble(
         ensembles.append(rlist)
     
     _scores = {}
-    for i, _rlist in enumerate(_ensembles):
+    for i, _rlist in enumerate(ensembles):
         for _r in _rlist.results:
             _fold, _train = data[i]
             _fit = _r.level+_r.ar+np.sum(_r.seas,axis=1)
@@ -129,14 +206,39 @@ def dlm_ensemble(
     scores: dict = None
 ) -> DLMResultList:
     """
-    Fits an ensemble of Dynamic Linear Models (DLMs) to a time series.
-
-    :param level: level (List)
-    :param variable_level: seasonal_harmonics (List[int]): 
-
-    :param scores: (dict[float], optional) a dictionary in form 
-    {name_string: score}, where name_string is is given by name_from_spec
-
+    Fits an ensemble of Dynamic Linear Models to a TimeSeries object.
+    For all keyword arguments (except scores) a list or nested list is 
+    used to determine the configurations used in the ensemble.
+    
+    For most parameters a boolean List is used. For example
+    variable_level = [True, False] would include model configurations
+    with and without a variable level in the ensemble. The possible values
+    are therefore [True], [False], [True, False].
+    
+    If seasonal components are included in the ensemble they can be specified
+    using nested lists. Each configuration can included multiple seasonal
+    components::
+    
+    
+    
+    :param timeseries:
+    :type timeseries: TimeSeries
+    :param name: Identifier for the DLMResult object
+    :type name: str
+    :param level: 
+    :type level: List[bool]
+    :param variable_level: seasonal_harmonics (List[int]):
+    :param trend: List[bool]:  (Default value = [True])
+    :param variable_trend: List[bool]:  (Default value = [True])
+    :param seasonal: List[bool]:  (Default value = [True])
+    :param seasonal_period: List[List[float]]:  (Default value = [[365]])
+    :param seasonal_harmonics: List[List[List[int]]]:  (Default value = [[[1)
+    :param variable_seasonal: List[List[List[bool]]]:  (Default value = [[[True)
+    :param False]]]: 
+    :param autoregressive: List[int]:  (Default value = [1])
+    :param irregular: List[bool]:  (Default value = [False)
+    :param True]: 
+    :param scores: dict:  (Default value = None)
     :returns: DLMResultList: An object containing multiple DLMResult objects
 
     """
@@ -182,7 +284,7 @@ def dlm_ensemble(
             range(len(dicts)), autoregressive, trend, variable_trend, level, variable_level, irregular):
             sc = dicts[idx]
             ss = dicts2[idx]
-            print(f"Fitting: {sc}, {ss}, {a}, {t}, {st}, {l}, {sl}, {i}")
+            
             model = sm.tsa.UnobservedComponents(
                 timeseries.data,level=l, trend=t,
                 freq_seasonal=sc, autoregressive=a, 
@@ -194,9 +296,26 @@ def dlm_ensemble(
                     category=statsmodels.tools.sm_exceptions.ConvergenceWarning)
                 result = model.fit(disp=0)    
             resobj=DLMResult.create(name,timeseries, result,score=scores)
+            print(f"Processed: {resobj.name_from_spec()}")
             out.append(resobj)
     if False in seasonal:
-        pass
+        for idx, a, t, st, l, sl, i in itertools.product(
+            range(len(dicts)), autoregressive, trend, variable_trend, level, variable_level, irregular):
+           
+            
+            model = sm.tsa.UnobservedComponents(
+                timeseries.data,level=l, trend=t,
+                freq_seasonal=None, autoregressive=a, 
+                stochastic_level=sl, stochastic_trend=st, 
+                stochastic_freq_seasonal=None,irregular=i)
+
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore",
+                    category=statsmodels.tools.sm_exceptions.ConvergenceWarning)
+                result = model.fit(disp=0)    
+            resobj=DLMResult.create(name,timeseries, result,score=scores)
+            print(f"Processed: {resobj.name_from_spec()}")
+            out.append(resobj)
 
     return DLMResultList(out)
 
@@ -214,22 +333,24 @@ def dlm_ensemble(
 ################ OLD
 def model_selection_bias_AMI(results: DLMResultList, percentile: int = 25, 
                          years: ArrayLike = None):
-    """
-    Calculate the model selection bias for Dynamic Linear Models (DLM) results.
-
+    """Calculate the model selection bias for Dynamic Linear Models (DLM) results.
+    
     This function computes the model selection bias for AMIs for the given DLMResultList. The bias is calculated by
-    computing the weighted variance between the average fit AMI and each individual fit AMI for each year. 
-    The bias is calculated using all models whose aggregate metric is within the specified percentile. 
+    computing the weighted variance between the average fit AMI and each individual fit AMI for each year.
+    The bias is calculated using all models whose aggregate metric is within the specified percentile.
 
-    Parameters:
-        results (DLMResultList): A DLMResultList object containing a list of DLM results.
-        percentile (int, optional): The percentile value used to select data points for computing the model selection bias.
-                                   Defaults to 25.
-        years (ArrayLike, optional): An array-like object containing the years for which to calculate the model selection bias.
-                                     If None, the years will be set to [2018, 2019, 2020, 2021, 2022]. Defaults to None.
-
-    Returns:
-        np.ndarray: An array containing the model selection bias for each year specified in the 
+    :param results: DLMResultList
+    :param percentile: int
+    :param Defaults: to 25
+    :param years: ArrayLike
+    :param If: None
+    :param results: DLMResultList:
+    :param percentile: int:  (Default value = 25)
+    :param years: ArrayLike:  (Default value = None)
+    :param results: DLMResultList: 
+    :param percentile: int:  (Default value = 25)
+    :param years: ArrayLike:  (Default value = None)
+    :returns: np.ndarray: An array containing the model selection bias for each year specified in the
         'years' array.
 
     """
@@ -267,20 +388,20 @@ def model_selection_bias_AMI(results: DLMResultList, percentile: int = 25,
 
 
 def model_selection_bias_trend(results: DLMResultList, percentile: int = 25):
-    """
-    Calculate the model selection bias for Dynamic Linear Models (DLM) results.
-
+    """Calculate the model selection bias for Dynamic Linear Models (DLM) results.
+    
     This function computes the model selection bias for growth rates for the given DLMResultsList. The bias is calculated by
-    computing the weighted variance between the average fit trend (growth rate) and each individual fit trend. 
-    The bias is calculated using all models whose aggregate metric is within the specified percentile. 
+    computing the weighted variance between the average fit trend (growth rate) and each individual fit trend.
+    The bias is calculated using all models whose aggregate metric is within the specified percentile.
 
-    Parameters:
-        results (DLMResultList): A DLMResultList object containing a list of DLM results.
-        percentile (int, optional): The percentile value used to select data points for computing the model selection bias.
-                                   Defaults to 25.
-
-    Returns:
-        float: model selection bias
+    :param results: DLMResultList
+    :param percentile: int
+    :param Defaults: to 25
+    :param results: DLMResultList:
+    :param percentile: int:  (Default value = 25)
+    :param results: DLMResultList: 
+    :param percentile: int:  (Default value = 25)
+    :returns: float: model selection bias
 
     """
 
@@ -308,22 +429,34 @@ def model_selection_bias_trend(results: DLMResultList, percentile: int = 25):
     return np.sqrt(np.average((trend_avg-_r.trend)**2,weights=1/np.sqrt(trend_cov_avg**2+_r.trend_cov**2),axis=0))
 
 def mean_from_date(d1: int ,m1: int ,y1: int ,d2: int ,m2: int ,y2: int , X: ArrayLike ,d: ArrayLike ) -> float:
-    """
-    Calculate the mean of the values in X that fall within a given date range.
+    """Calculate the mean of the values in X that fall within a given date range.
 
-    Parameters:
-        d1 (int): Day of the month for the start date (1-31).
-        m1 (int): Month of the start date (1-12).
-        y1 (int): Year of the start date.
-        d2 (int): Day of the month for the end date (1-31).
-        m2 (int): Month of the end date (1-12).
-        y2 (int): Year of the end date.
-        X (ArrayLike): Array of values to calculate the mean from.
-        d (ArrayLike): Array of date values (in days since 1970-01-01) 
-                    corresponding to the values in X.
-
-    Returns:
-        float: Mean of the values in X that fall within the specified date range.
+    :param d1: int
+    :param m1: int
+    :param y1: int
+    :param d2: int
+    :param m2: int
+    :param y2: int
+    :param X: ArrayLike
+    :param d: ArrayLike
+    :param corresponding: to the values in X
+    :param d1: int:
+    :param m1: int:
+    :param y1: int:
+    :param d2: int:
+    :param m2: int:
+    :param y2: int:
+    :param X: ArrayLike:
+    :param d: ArrayLike:
+    :param d1: int: 
+    :param m1: int: 
+    :param y1: int: 
+    :param d2: int: 
+    :param m2: int: 
+    :param y2: int: 
+    :param X: ArrayLike: 
+    :param d: ArrayLike: 
+    :returns: float: Mean of the values in X that fall within the specified date range.
 
     """
     
@@ -333,21 +466,33 @@ def mean_from_date(d1: int ,m1: int ,y1: int ,d2: int ,m2: int ,y2: int , X: Arr
     return np.nanmean(X[(d>=date_min) & (d<=date_max)])
 
 def vmr_increase(d1: int, m1: int, y1: int, d2: int, m2: int, y2: int, L: ArrayLike, d: ArrayLike) -> float:
-    """
-    Calculate the increase in level between two days.
+    """Calculate the increase in level between two days.
 
-    Parameters:
-        d1 (int): Day of the month for the start date (1-31).
-        m1 (int): Month of the start date (1-12).
-        y1 (int): Year of the start date.
-        d2 (int): Day of the month for the end date (1-31).
-        m2 (int): Month of the end date (1-12).
-        y2 (int): Year of the end date.
-        L (ArrayLike): Array of level values corresponding to the dates in 'd'.
-        d (ArrayLike): Array of date values (in days since 1970-01-01) corresponding to the values in 'L'.
-
-    Returns:
-        float: Increase in level between the start and end dates.
+    :param d1: int
+    :param m1: int
+    :param y1: int
+    :param d2: int
+    :param m2: int
+    :param y2: int
+    :param L: ArrayLike
+    :param d: ArrayLike
+    :param d1: int:
+    :param m1: int:
+    :param y1: int:
+    :param d2: int:
+    :param m2: int:
+    :param y2: int:
+    :param L: ArrayLike:
+    :param d: ArrayLike:
+    :param d1: int: 
+    :param m1: int: 
+    :param y1: int: 
+    :param d2: int: 
+    :param m2: int: 
+    :param y2: int: 
+    :param L: ArrayLike: 
+    :param d: ArrayLike: 
+    :returns: float: Increase in level between the start and end dates.
 
     """
     L = np.asarray(L)
@@ -372,18 +517,31 @@ def vmr_std_increase(d1: int ,m1: int ,y1: int ,d2: int ,m2: int ,y2: int
     """"
     Calculate the standard deviation to the increase in level between two days.
 
-     Parameters:
-        d1 (int): Day of the month for the start date (1-31).
-        m1 (int): Month of the start date (1-12).
-        y1 (int): Year of the start date.
-        d2 (int): Day of the month for the end date (1-31).
-        m2 (int): Month of the end date (1-12).
-        y2 (int): Year of the end date.
-        cL (ArrayLike): Array of level covariance values corresponding to the dates in 'd'.
-        d (ArrayLike): Array of date values (in days since 1970-01-01) corresponding to the values in 'L'.
-
-    Returns:
-        float: Standard deviation corresponding to increase in level between the start and end dates.
+    :param d1: int
+    :param m1: int
+    :param y1: int
+    :param d2: int
+    :param m2: int
+    :param y2: int
+    :param cL: ArrayLike
+    :param d: ArrayLike
+    :param d1: int:
+    :param m1: int:
+    :param y1: int:
+    :param d2: int:
+    :param m2: int:
+    :param y2: int:
+    :param cL: ArrayLike:
+    :param d: ArrayLike:
+    :param d1: int: 
+    :param m1: int: 
+    :param y1: int: 
+    :param d2: int: 
+    :param m2: int: 
+    :param y2: int: 
+    :param cL: ArrayLike: 
+    :param d: ArrayLike: 
+    :returns: float: Standard deviation corresponding to increase in level between the start and end dates.
 
     """
     cL = np.asarray(cL)
@@ -401,59 +559,42 @@ def vmr_std_increase(d1: int ,m1: int ,y1: int ,d2: int ,m2: int ,y2: int
     return out  
 
 
+def _get_idx_at_time(times,time, tolerance=np.timedelta64(1,'D')):
+    delta = np.min(np.abs(times-time))
+    idx = np.argmin(np.abs(times-time))
+    if delta>tolerance:
+        return None
+    else:
+        return idx
+    
 def annual_vmr_increase(year: int, data: DLMResult) -> Tuple[float, float]:
     """Calculate annual increase  and standard deviation in volume mixing ratio
         for a given DLMResult object.
 
-    Parameters:
-        year (int): the year for which the increase is calculated.
-        data (DLMResult): a DLMResult object gained from read_dlm_results.
+    :param year: int
+    :param data: DLMResult
 
-    Returns:
-        Tuple[float, float]: a tuple containing the annual increase and 
+    :returns: Tuple[float, float]: a tuple containing the annual increase and
         standard deviation.
+
     """
     inc = -999
     inc_std = -999
     
-    if data.time_unit == "day":
-       
-        date_min = (datetime.datetime(year, 1, 1) - datetime.datetime(1970, 1, 1)).days
-        date_max = (datetime.datetime(year, 12, 31) - datetime.datetime(1970, 1, 1)).days
-        try:
-            t = data.time
-            l = data.level
-            lc = data.level_cov
-            a = data.ar
-            ac = data.ar_cov
-            
-            #Sometimes the covariances are below zero, which is probably an issue with the machine precision and
-            #covariances beeing close to zero. Thus we set values below zero to zero.
-            lc[lc<0] = 0
-            ac[ac<0] = 0
-      
-            inc = (l[t == date_max] - l[t == date_min])[0]
-            inc_std = np.sqrt(lc[t == date_max] + lc[t == date_min])[0]
-        except Exception as e:
-            print(e)
-    elif data.time_unit == "month":
-        date_min = (datetime.datetime(year, 1, 1) - datetime.datetime(1970, 1, 1)).days
-        date_max = (datetime.datetime(year + 1, 1, 1) - datetime.datetime(1970, 1, 1)).days
-        try:
-            t = data.time
-            l = data.level
-            lc = data.level_cov
-            a = data.ar
-            ac = data.ar_cov
-            
-            lc[lc<0] = 0
-            ac[ac<0] = 0
-            
-            inc = (l[t == date_max] - l[t == date_min])[0]
-            inc_std = np.sqrt(lc[t == date_max] + lc[t == date_min])[0]
-        except Exception as e:
-            print(e)
-    return inc, inc_std
+    t1 = np.datetime64(f"{year}-01-01")
+    t2 = np.datetime64(f"{year}-12-31")
+    
+    idx1 = _get_idx_at_time(data.timeseries._time64, t1)
+    idx2 = _get_idx_at_time(data.timeseries._time64, t2)
+    
+    if idx1 is not None and idx2 is not None:
+        inc = data.level[idx2] - data.level[idx1]
+        inc_std = np.sqrt(data.level_cov[idx2]+data.level_cov[idx1])
+        return inc, inc_std
+    else:
+        #Todo raise error
+        return None, None
+    
 
 
 def get_monthly_vmr(vmr: ArrayLike, date_min: Union[int, datetime.datetime], 
@@ -461,17 +602,27 @@ def get_monthly_vmr(vmr: ArrayLike, date_min: Union[int, datetime.datetime],
                     year_range: tuple = (2018, 2023)) -> Tuple[np.ndarray, np.ndarray]:
     """Calculate monthly volume mixing ration (vmr) from daily vmr data for a given time range
 
-    Parameters:
-        vmr (array_like): an array of vmr values.
-        date_min (int, datetime.datetime): the minimum date in days since 01.01.1970
-            or datetime object for which to calculate vmr.
-        date_max (int, datetime.datetime): the maximum date in days since 01.01.1970 
-            or datetime object for which to calculate vmr.
-        year_range (Tuple[int], optional): a list containing the start and end years
-            of the range of years to calculate vmr for. Defaults to (2018, 2022).
+    :param vmr: array_like
+    :param date_min: int
+    :param or: datetime object for which to calculate vmr
+    :param date_max: int
+    :param or: datetime object for which to calculate vmr
+    :param year_range: Tuple
+    :param of: the range of years to calculate vmr for
+    :param vmr: ArrayLike:
+    :param date_min: Union[int:
+    :param datetime: datetime]:
+    :param date_max: Union[int:
+    :param year_range: tuple:  (Default value = (2018)
+    :param 2023: returns: Tuple[numpy.ndarray, numpy.ndarray]: a tuple containing arrays of dates and vmr values.
+    :param vmr: ArrayLike: 
+    :param date_min: Union[int: 
+    :param datetime.datetime]: 
+    :param date_max: Union[int: 
+    :param year_range: tuple:  (Default value = (2018)
+    :param 2023): 
+    :returns: Tuple[numpy.ndarray, numpy.ndarray]: a tuple containing arrays of dates and vmr values.
 
-    Returns:
-        Tuple[numpy.ndarray, numpy.ndarray]: a tuple containing arrays of dates and vmr values.
     """
     
     vmr = np.asarray(vmr)
