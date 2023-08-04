@@ -413,10 +413,11 @@ def model_selection_bias_ALI(results: DLMResultList, years: ArrayLike,
 
     """
     
-    if years == None:
-        years = np.array([2018,2019,2020,2021,2022])
-    else:
+    if years is not None:
         years = np.asarray(years)
+        
+    else:
+        years = np.array([2018,2019,2020,2021,2022])
         
     score_list = np.asarray([_r.dlm_fit_rating[metric] for _r in results.results])
     score_max = np.percentile(score_list, percentile, method="nearest")
