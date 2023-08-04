@@ -1,44 +1,49 @@
 # -*- coding: utf-8 -*-
 """This module handles operations on spatio temporal data
 
-
-    Version: 0.1.0
-    Latest changes: 27.07.2023
-    Author: Jonas Hachmeister
 """
 
 import warnings
-from typing import Union, List, Tuple, Optional
+from typing import Tuple
 
 import numpy as np
-from numpy.typing import ArrayLike
 
 
-def _nansum(array, axis = None, out = None):
-    "This alters the numpy.nansum to return nan if all values are nan"
+
+def _nansum(array: np.ndarray, axis: int = None, out: np.ndarray = None):
+    """This alters the numpy.nansum to return nan if all values are nan
+
+    :param array: Array
+    :type array: np.ndarray
+    :param axis: Axis to be  passed to numpy functions
+    :type axis: int
+    :param out: Out parameter to be passed to numpy functions
+    :type out: np.ndarray
+    :returns: The nansum of the input array, but if all values are
+    Nan's then `np.nan` is returned
+    :rtype: np.ndarray
+    """
     return np.where(np.all(np.isnan(array), axis=axis), np.nan, np.nansum(array,axis=axis, out=out))
 
-def _area_weighted_average(data: ArrayLike, error: ArrayLike, lats: ArrayLike, lons: ArrayLike, zonal_avg: bool = False ) -> Tuple[np.ndarray, np.ndarray]:
-    """
-    Calculate the area weighted average of spatio temporal data.
-
-    Paramters:
-    data (np.ndarray): A 3D array with the first two dimensions as the spatial grid and the third as the time grid
-    error (np.ndarray): A 3D array with the first two dimensions as the spatial grid and the third as the time grid
-    lats (np.ndarray): A 1D array of latitudes
-    lons (np.ndarray): A 1D array of longitudes
-    zonal_avg (bool, optional): If true average first over longitudes and second over latitudes. Else the array
-                    is flattened and then averaged.
-
-    Returns:
-    Tuple[np.ndarray, np.ndarray]: The weighted  mean and standard deviation
+def _area_weighted_average(data: np.ndarray, error: np.ndarray, lats: np.ndarray, lons: np.ndarray, zonal_avg: bool = False ) -> Tuple[np.ndarray, np.ndarray]:
+    """Calculate the area weighted average of spatio temporal data.
+    
+    :param data: Data of the shape (lat, lon, time)
+    :type data: np.ndarray
+    :param error: Error corresponding to data of shape
+        (lat, lon, time)
+    :type error: np.ndarry
+    :param lats: Lower latitude bounds of grid cells of shape (lat)
+    :type lats: np.ndarray 
+    :param lons: Lower longitude bounds of grid cells of shape (lon)
+    :type lons: np.ndarray 
+    :param zonal_avg: If `True` average over longitudes first, this
+        can help minimizing sampling bias in certain cases
+    :type zonal_avg: bool:
+    :returns: timeseries and corresponding error of shape (time)
+    :rtype: Tuple[np.ndarray, np.ndarray]
     """
     
-
-    data = np.asarray(data)
-    error = np.asarray(error)
-    lats = np.asarray(lats)
-    lons = np.asarray(lons)
     
     if lats.shape[0] == 1:
         return np.nanmean(data, axis=(0, 1)), np.nanmean(error, axis=(0, 1))
@@ -102,20 +107,20 @@ def _area_weighted_average(data: ArrayLike, error: ArrayLike, lats: ArrayLike, l
             data_mean2 = _nansum(data * ma_weights, axis = (0,1))
             error_mean2 = _nansum(error * ma_weights, axis = (0,1))
     
-    #TODO: possible problem with 0 in data?
-    #data_mean2[data_mean2 == 0] = np.nan
+   
     return data_mean2, error_mean2
 
 
 def _area_perc(theta1: float, theta2: float) -> float:
     """Calculate the percentage of surface area between two angles on a sphere.
 
-    Parameters:
-        theta1 (float): The first angle in degrees.
-        theta2 (float): The second angle in degrees.
+    :param theta1: Angle 1
+    :param theta2: Angle 2
+    :type theta1: float 
+    :type theta2: float
+    :returns: The percentage of surface area between theta1 and theta2.
+    :rtype: float
 
-    Returns:
-        float: The percentage of surface area between theta1 and theta2.
     """
     
     # Ensure theta2 is greater than theta1
@@ -133,27 +138,30 @@ def _area_perc(theta1: float, theta2: float) -> float:
     return A1 - A2
 
 
-def inhomogeneity_spatial(lat: ArrayLike, lon: ArrayLike, 
-                        N: ArrayLike, scale_lat: float = None, scale_lon: float = None) -> np.ndarray:
-    """
-    Calculate the inhomogeneity for a spatial grid of data. 
+def inhomogeneity_spatial(lat: np.ndarray, lon: np.ndarray, 
+                        N: np.ndarray, scale_lat: float = None, scale_lon: float = None) -> np.ndarray:
+    """Calculate the inhomogeneity for a spatial grid of data.
     Based on Sofieva et al., 2014 (https://doi.org/10.5194/amt-7-1891-2014)
 
-    Parameters:
-        lat (array_like): 1D array of latitude values.
-        lon (array_like): 1D array of longitude values.
-        N (array_like): 2D array of data values, with shape (lat, lon) containing the Number of
-            measurements per cell.
-        scale_lat (float): Scaling factor for the latitude component of the homogeneity index.
-            Default value is 0.5.
-        scale_lon (float): Scaling factor for the longitude component of the homogeneity index.
-            Default value is 0.5.
-
-    Returns:
-        numpy.ndarray: 2D array of homogeneity index values, with shape (N.shape(2), 3).
-            Each row contains the inhomogeneity, asymmetry component, and entropy component
-            for the corresponding time step in N.
-
+    :param lat: Lower latitude bounds of grid cells of shape (lat)
+    :type lat: np.ndarray
+    :param lon: Lower longitude bounds of grid cells of shape (lon)
+    :type lon: np.ndarray
+    :param N: Number of measurements per cell of shape
+        (lat, lon, time)
+    :type N: np.ndarry
+    :param scale_lat: Weight of the latitudinal part of the spatial
+        inhomogeneity, if not specified lat and lon part will be
+        equally weighted, defaults to `None`
+    :type scale_lat: float
+    :param scale_lon: Weight of the longitudinal part of the spatial
+        inhomogeneity, if not specified lat and lon part will be
+        equally weighted, defaults to `None`
+    :type scale_lon: float
+    :returns: Array of shape (time, 3), aach row contains the
+        inhomogeneity, asymmetry component, and entropy component
+        for the corresponding time step in N.
+    :rtype: np.ndarray
     """
     
     lat = np.asarray(lat)
@@ -234,21 +242,25 @@ def inhomogeneity_spatial(lat: ArrayLike, lon: ArrayLike,
             H_out[c, 2]= np.nan
     return H_out
 
-def inhomogeneity_temporal(lat: ArrayLike, lon: ArrayLike, time: ArrayLike, N: ArrayLike) -> np.ndarray:
-    """
-    Calculate the temporal inhomogeneity of data at each grid point.
+def inhomogeneity_temporal(lat: np.ndarray, lon: np.ndarray, time: np.ndarray, N: np.ndarray) -> np.ndarray:
+    """Calculate the temporal inhomogeneity of data at each grid point.
     Based on Sofieva et al., 2014 (https://doi.org/10.5194/amt-7-1891-2014)
 
-    Parameters:
-        lat (array_like): 1D array of latitude values.
-        lon (array_like): 1D array of longitude values.
-        time (array_like): 1D array of datetime values corresponding to each time step in N.
-        N (array_like): 3D array of data values with shape (lat.shape[0], lon.shape[0], days.shape[0]).
-
-    Returns:
-        ndarray: 3D array of temporal homogeneity values at each grid point,
-        with shape (lat.shape[0], lon.shape[0], 3).
-        The last dimension contains three values inhomogeneity, asymmetry component, and entropy component
+    :param lat: Lower latitude bounds of grid cells of shape (lat)
+    :type lat: np.ndarray
+    :param lon: Lower longitude bounds of grid cells of shape (lon)
+    :type lon: np.ndarray
+    :param time: Time values of shape (time)
+    :type time: np.ndarray
+    :param N: Number of measurements per cell of shape
+        (lat, lon, time)
+    :type N: np.ndarry
+    
+    :returns: Array of temporal homogeneity values at each grid point,
+        with shape (lat, lon, 3).
+        The last dimension contains the temporal inhomogeneity, 
+        asymmetry component, and entropy component.
+    :rtype: np.ndarray:
     """
     
     lat = np.asarray(lat)
