@@ -4,7 +4,15 @@ Usage
 Installation
 ------------
 
-TODO
+Install from PyPI using::
+
+    pip install dlmhelper
 
 
 
+Requirements
+------------
+- numpy
+- matplotlib
+- statsmodels
+- tabulate
