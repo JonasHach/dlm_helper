@@ -82,6 +82,8 @@ def dlm_fit(timeseries: TimeSeries, name: str, level: bool = True,
                        'harmonics': seasonal_harmonics[i]})
     else:
         fs = None
+        variable_seasonal = None
+        
     model = sm.tsa.UnobservedComponents(
         timeseries.data,level=level, trend=trend,freq_seasonal=fs,
         autoregressive=autoregressive, stochastic_level=variable_level,
@@ -364,8 +366,8 @@ def dlm_ensemble(
             if verbose>=1: print(f"Processed: {resobj.name_from_spec()}")
             out.append(resobj)
     if False in seasonal:
-        for idx, a, t, st, l, sl, i in itertools.product(
-            range(len(dicts)), autoregressive, trend, variable_trend, level, variable_level, irregular):
+        for a, t, st, l, sl, i in itertools.product(
+            autoregressive, trend, variable_trend, level, variable_level, irregular):
            
             
             model = sm.tsa.UnobservedComponents(

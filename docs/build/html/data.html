@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>data.py &mdash; dlmhelper 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="tools.py" href="tools.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            dlmhelper
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">data.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dlmhelper.data.DLMResult"><code class="docutils literal notranslate"><span class="pre">DLMResult</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.DLMResult.create"><code class="docutils literal notranslate"><span class="pre">DLMResult.create()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.DLMResult.load"><code class="docutils literal notranslate"><span class="pre">DLMResult.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.DLMResult.name_from_spec"><code class="docutils literal notranslate"><span class="pre">DLMResult.name_from_spec()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.DLMResult.plot"><code class="docutils literal notranslate"><span class="pre">DLMResult.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.DLMResult.plot_summary"><code class="docutils literal notranslate"><span class="pre">DLMResult.plot_summary()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.DLMResult.save"><code class="docutils literal notranslate"><span class="pre">DLMResult.save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.DLMResult.summary"><code class="docutils literal notranslate"><span class="pre">DLMResult.summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dlmhelper.data.DLMResultList"><code class="docutils literal notranslate"><span class="pre">DLMResultList</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.DLMResultList.get_best_result"><code class="docutils literal notranslate"><span class="pre">DLMResultList.get_best_result()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.DLMResultList.load_archive"><code class="docutils literal notranslate"><span class="pre">DLMResultList.load_archive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.DLMResultList.plot_summary"><code class="docutils literal notranslate"><span class="pre">DLMResultList.plot_summary()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.DLMResultList.save_archive"><code class="docutils literal notranslate"><span class="pre">DLMResultList.save_archive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.DLMResultList.summary"><code class="docutils literal notranslate"><span class="pre">DLMResultList.summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dlmhelper.data.Grid"><code class="docutils literal notranslate"><span class="pre">Grid</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.Grid.filter_inhomogeneity_spatial"><code class="docutils literal notranslate"><span class="pre">Grid.filter_inhomogeneity_spatial()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.Grid.filter_inhomogeneity_temporal"><code class="docutils literal notranslate"><span class="pre">Grid.filter_inhomogeneity_temporal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.Grid.inhomogeneity_spatial"><code class="docutils literal notranslate"><span class="pre">Grid.inhomogeneity_spatial()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.Grid.inhomogeneity_temporal"><code class="docutils literal notranslate"><span class="pre">Grid.inhomogeneity_temporal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.Grid.to_TimeSeries"><code class="docutils literal notranslate"><span class="pre">Grid.to_TimeSeries()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dlmhelper.data.TimeSeries"><code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.TimeSeries.load"><code class="docutils literal notranslate"><span class="pre">TimeSeries.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.TimeSeries.plot"><code class="docutils literal notranslate"><span class="pre">TimeSeries.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dlmhelper.data.TimeSeries.save"><code class="docutils literal notranslate"><span class="pre">TimeSeries.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dlmhelper.data.get_grid_dim"><code class="docutils literal notranslate"><span class="pre">get_grid_dim()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">tools.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spatio_temporal.html">spatio_temporal.py</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">dlmhelper</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">data.py</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/data.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-dlmhelper.data">
+<span id="data-py"></span><h1>data.py<a class="headerlink" href="#module-dlmhelper.data" title="Permalink to this heading"></a></h1>
+<p>This module provides two classes which are used to handle data from DLM results.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Grid: Container for gridded data which can be easily converted to</dt><dd><p>a TimeSeries object</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>TimeSeries: Container for timeseries data which is used for all</dt><dd><p>dlm fit functions</p>
+</dd>
+</dl>
+</li>
+<li><p>DLMResult: Handles single results</p></li>
+<li><dl class="simple">
+<dt>DLMResultList: Acts as a container for all DLMResults generated for a</dt><dd><p>given time series</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="dlmhelper.data.DLMResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dlmhelper.data.</span></span><span class="sig-name descname"><span class="pre">DLMResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dlmhelper.data.TimeSeries" title="dlmhelper.data.TimeSeries"><span class="pre">TimeSeries</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dlm_specification</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dlm_fit_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dlm_fit_rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level_cov</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trend_cov</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seas_cov</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ar_cov</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_loglikeburn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.DLMResult" title="Permalink to this definition"></a></dt>
+<dd><p>This class is a container for results from dlm fits.
+Objects from this class are created by 
+<a class="reference internal" href="tools.html#dlmhelper.tools.dlm_fit" title="dlmhelper.tools.dlm_fit"><code class="xref py py-func docutils literal notranslate"><span class="pre">dlmhelper.tools.dlm_fit()</span></code></a> or 
+<a class="reference internal" href="tools.html#dlmhelper.tools.dlm_ensemble" title="dlmhelper.tools.dlm_ensemble"><code class="xref py py-func docutils literal notranslate"><span class="pre">dlmhelper.tools.dlm_ensemble()</span></code></a>
+or when loading saved results from a .json file using
+<a class="reference internal" href="#dlmhelper.data.DLMResult.load" title="dlmhelper.data.DLMResult.load"><code class="xref py py-func docutils literal notranslate"><span class="pre">DLMResult.load()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Name/Identifier of object</p></li>
+<li><p><strong>timeseries</strong> (<a class="reference internal" href="#dlmhelper.data.TimeSeries" title="dlmhelper.data.TimeSeries"><em>TimeSeries</em></a>) – TimeSeries object that has been fitted</p></li>
+<li><p><strong>dlm_specification</strong> (<em>dict</em>) – Dict containing the dlm configuration</p></li>
+<li><p><strong>dlm_fit_params</strong> (<em>dict</em>) – Dict containing the values of the
+underlying parameters fitted by the dlm</p></li>
+<li><p><strong>dlm_fit_rating</strong> (<em>dict</em>) – Dict containing the various metrics
+which aid in comparing diffrent dlm fits</p></li>
+<li><p><strong>level</strong> (<em>np.ndarray</em>) – level component of shape (time)</p></li>
+<li><p><strong>level_cov</strong> (<em>np.ndarray</em>) – covariance of level component of
+shape (time)</p></li>
+<li><p><strong>trend</strong> (<em>np.ndarray</em>) – trend component of shape (time)</p></li>
+<li><p><strong>trend_cov</strong> (<em>np.ndarray</em>) – covariance of trend component of
+shape (time)</p></li>
+<li><p><strong>seas</strong> (<em>np.ndarray</em>) – seasonal components of shape (time, n) where
+<cite>n</cite> is the number of seasonal components</p></li>
+<li><p><strong>seas_cov</strong> (<em>np.ndarray</em>) – covariance of seasonal components of
+shape (time,n)</p></li>
+<li><p><strong>ar</strong> (<em>np.ndarray</em>) – auto-regressive component of shape (time)</p></li>
+<li><p><strong>ar_cov</strong> (<em>np.ndarray</em>) – covariance of auto-regressive component of
+shape (time)</p></li>
+<li><p><strong>resid</strong> – Residual of shape (time)</p></li>
+<li><p><strong>_loglikeburn</strong> (<em>int</em>) – UnobservedComponentsResults.loglikelihood_burn</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.DLMResult.create">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dlmhelper.data.TimeSeries" title="dlmhelper.data.TimeSeries"><span class="pre">TimeSeries</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">UnobservedComponentsResults</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.DLMResult.create" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a DLMResult object from a TimeSeries object
+and an UnobservedComponentsResults object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Identifier</p></li>
+<li><p><strong>timeseries</strong> (<a class="reference internal" href="#dlmhelper.data.TimeSeries" title="dlmhelper.data.TimeSeries"><em>TimeSeries</em></a>) – Fitted timeseries</p></li>
+<li><p><strong>result</strong> – Fit results</p></li>
+<li><p><strong>score</strong> (<em>dict</em>) – dictionary of cross validation scores (this will
+change in the future)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>DLMResult object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#dlmhelper.data.DLMResult" title="dlmhelper.data.DLMResult">DLMResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.DLMResult.load">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.DLMResult.load" title="Permalink to this definition"></a></dt>
+<dd><p>Load TimeSeries object from .json</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – path to .json file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>DLMResult object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#dlmhelper.data.DLMResult" title="dlmhelper.data.DLMResult">DLMResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.DLMResult.name_from_spec">
+<span class="sig-name descname"><span class="pre">name_from_spec</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#dlmhelper.data.DLMResult.name_from_spec" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a unique identifier describing the dlm
+configuration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Identifier</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.DLMResult.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.DLMResult.plot" title="Permalink to this definition"></a></dt>
+<dd><p>Plot the fit result. If <cite>ax</cite> is not specified, create a
+new figure. Returns the figure and axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>matplotlib.axes</em><em>, </em><em>optional</em>) – (Optional) The axis the plot should be drawn on,
+defaults to None</p></li>
+<li><p><strong>seas</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to draw the seasonal component,
+defaults to True</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The axis and figure</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matplotlib.axes, matlotlib.figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.DLMResult.plot_summary">
+<span class="sig-name descname"><span class="pre">plot_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.DLMResult.plot_summary" title="Permalink to this definition"></a></dt>
+<dd><p>Create a figure showing an overview of the dlm fit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seas</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the seasonal component is plotted
+in fit overview (if <cite>False</cite> only plot the level),
+defaults to True</p></li>
+<li><p><strong>fig</strong> (<em>matplotlib.figure</em><em>, </em><em>optional</em>) – Figure to use</p></li>
+<li><p><strong>figsize</strong> (<em>Tuple</em><em>, </em><em>optional</em>) – Tuple describing the figure size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Figure</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matplotlib.figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.DLMResult.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.DLMResult.save" title="Permalink to this definition"></a></dt>
+<dd><p>Save DLMResult object as .json
+Filename will be ‘DLMResult_fname.json’.
+If <cite>fname</cite> is not specified, the file is named using the
+<cite>name</cite> field of the object and an identifier generated
+from the DLM configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Path to .json file</p></li>
+<li><p><strong>fname</strong> (<em>str</em><em>, </em><em>optional</em>) – Filename, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.DLMResult.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.DLMResult.summary" title="Permalink to this definition"></a></dt>
+<dd><p>Plots a summary of the object
+This is currently not completely implemented</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dlmhelper.data.DLMResultList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dlmhelper.data.</span></span><span class="sig-name descname"><span class="pre">DLMResultList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dlmhelper.data.DLMResult" title="dlmhelper.data.DLMResult"><span class="pre">DLMResult</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.DLMResultList" title="Permalink to this definition"></a></dt>
+<dd><p>This class is used for handling multiple dlm results
+created by <a class="reference internal" href="tools.html#dlmhelper.tools.dlm_ensemble" title="dlmhelper.tools.dlm_ensemble"><code class="xref py py-func docutils literal notranslate"><span class="pre">dlmhelper.tools.dlm_ensemble()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Params results<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of DLMResult objects</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.DLMResultList.get_best_result">
+<span class="sig-name descname"><span class="pre">get_best_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">converged</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'aic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dlm_spec_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dlm_fit_params_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.DLMResultList.get_best_result" title="Permalink to this definition"></a></dt>
+<dd><p>Get the best dlm fit result using the metric given by <cite>sort</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>converged</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <cite>True</cite> only show configurations
+for which the fit converged, defaults to <cite>True</cite></p></li>
+<li><p><strong>sort</strong> (<em>str</em>) – Metric by which the results are sorted,
+defaults to <cite>aic</cite></p></li>
+<li><p><strong>dlm_spec_filter</strong> (<em>List</em><em>[</em><em>dict</em><em>]</em><em>, </em><em>optional</em>) – TODO</p></li>
+<li><p><strong>dlm_fit_params_filter</strong> (<em>List</em><em>[</em><em>dict</em><em>]</em><em>, </em><em>optional</em>) – TODO</p></li>
+<li><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em>) – Get the n-th best result, defaults to 0</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.DLMResultList.load_archive">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.DLMResultList.load_archive" title="Permalink to this definition"></a></dt>
+<dd><p>Load DLMResultList object saved as a .tar archive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Path to archive</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>DLMResultList object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#dlmhelper.data.DLMResultList" title="dlmhelper.data.DLMResultList">DLMResultList</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.DLMResultList.plot_summary">
+<span class="sig-name descname"><span class="pre">plot_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">converged</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'aic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dlm_spec_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dlm_fit_params_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(20,</span> <span class="pre">20)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.DLMResultList.plot_summary" title="Permalink to this definition"></a></dt>
+<dd><p>Plot a summary of the dlm results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num</strong> (<em>str</em><em> | </em><em>int</em><em>, </em><em>optional</em>) – Number of dlm results to plot.
+Can be ‘all’ or integer</p></li>
+<li><p><strong>converged</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <cite>True</cite> only show configurations
+for which the fit converged, defaults to <cite>True</cite></p></li>
+<li><p><strong>sort</strong> (<em>str</em><em>, </em><em>optional</em>) – Metric by which the results are sorted,
+defaults to <cite>aic</cite></p></li>
+<li><p><strong>seas</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <cite>True</cite> plot level+seasonal term</p></li>
+<li><p><strong>dlm_spec_filter</strong> (<em>List</em><em>[</em><em>dict</em><em>]</em><em>, </em><em>optional</em>) – TODO</p></li>
+<li><p><strong>dlm_fit_params_filter</strong> (<em>List</em><em>[</em><em>dict</em><em>]</em><em>, </em><em>optional</em>) – TODO</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>optional</em>) – Figsize to be passed to matplotlib</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.DLMResultList.save_archive">
+<span class="sig-name descname"><span class="pre">save_archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.DLMResultList.save_archive" title="Permalink to this definition"></a></dt>
+<dd><p>Save the DLMResultList object as a .tar archive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Path to file to save</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.DLMResultList.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">converged</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'aic'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.DLMResultList.summary" title="Permalink to this definition"></a></dt>
+<dd><p>Print a list of all DLMResults</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>converged</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <cite>True</cite> only show configurations
+for which the fit converged, defaults to <cite>True</cite></p></li>
+<li><p><strong>sort</strong> (<em>str</em>) – Metric by which the results are sorted,
+defaults to <cite>aic</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dlmhelper.data.Grid">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dlmhelper.data.</span></span><span class="sig-name descname"><span class="pre">Grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time64</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'day'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime64</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">numpy.datetime64('1970-01-01')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.Grid" title="Permalink to this definition"></a></dt>
+<dd><p>This class acts as a container for gridded data.
+When creating a Grid object either <cite>time</cite> or <cite>time64</cite>
+AND <cite>time_unit</cite> and <cite>reference_time</cite> has to be specified.</p>
+<p>The data is then automatically sorted and missing time steps
+of <cite>time_unit</cite> are added to the arrays (e.g. for daily data all
+missing days are added, if <cite>time_unit=hours</cite> all missing hours are
+added) and filled with NaN’s.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.Grid.filter_inhomogeneity_spatial">
+<span class="sig-name descname"><span class="pre">filter_inhomogeneity_spatial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hs_lim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_lat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_lon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.Grid.filter_inhomogeneity_spatial" title="Permalink to this definition"></a></dt>
+<dd><p>Filter the data using the spatial inhomogeneity (<cite>hs</cite>)
+calculated by
+<a class="reference internal" href="spatio_temporal.html#dlmhelper.spatio_temporal.inhomogeneity_spatial" title="dlmhelper.spatio_temporal.inhomogeneity_spatial"><code class="xref py py-func docutils literal notranslate"><span class="pre">dlmhelper.spatio_temporal.inhomogeneity_spatial()</span></code></a>.
+Filters days with <cite>hs&gt;hs_lim</cite>, if <cite>hs_lim</cite> is not specified
+it will be calculated using the following formula::
+hs_lim = median(hs) + 2*std(hs)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hs_lim</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum spatial inhomogeneity</p></li>
+<li><p><strong>scale_lat</strong> (<em>float</em><em>, </em><em>optional</em>) – Weight of the latitudinal part of the spatial
+inhomogeneity, if not specified lat and lon part will be
+equally weighted, defaults to <cite>None</cite></p></li>
+<li><p><strong>scale_lon</strong> (<em>float</em><em>, </em><em>optional</em>) – Weight of the longitudinal part of the spatial
+inhomogeneity, if not specified lat and lon part will be
+equally weighted, defaults to <cite>None</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.Grid.filter_inhomogeneity_temporal">
+<span class="sig-name descname"><span class="pre">filter_inhomogeneity_temporal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ht_lim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.Grid.filter_inhomogeneity_temporal" title="Permalink to this definition"></a></dt>
+<dd><p>Filter the data using the temporal inhomogeneity (<cite>ht</cite>)
+calculated by
+<a class="reference internal" href="spatio_temporal.html#dlmhelper.spatio_temporal.inhomogeneity_temporal" title="dlmhelper.spatio_temporal.inhomogeneity_temporal"><code class="xref py py-func docutils literal notranslate"><span class="pre">dlmhelper.spatio_temporal.inhomogeneity_temporal()</span></code></a>.
+Filters grid cells with <cite>ht&gt;ht_lim</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ht_lim</strong> (<em>float</em>) – Limit for temporal inhomogeneity,
+defaults to 0.5</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.Grid.inhomogeneity_spatial">
+<span class="sig-name descname"><span class="pre">inhomogeneity_spatial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale_lat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_lon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.Grid.inhomogeneity_spatial" title="Permalink to this definition"></a></dt>
+<dd><p>Return the spatial inhomogeneity of the data using
+<a class="reference internal" href="spatio_temporal.html#dlmhelper.spatio_temporal.inhomogeneity_spatial" title="dlmhelper.spatio_temporal.inhomogeneity_spatial"><code class="xref py py-func docutils literal notranslate"><span class="pre">dlmhelper.spatio_temporal.inhomogeneity_spatial()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scale_lat</strong> (<em>float</em><em>, </em><em>optional</em>) – Weight of the latitudinal part of the spatial
+inhomogeneity, if not specified lat and lon part will be
+equally weighted, defaults to <cite>None</cite></p></li>
+<li><p><strong>scale_lon</strong> (<em>float</em><em>, </em><em>optional</em>) – Weight of the longitudinal part of the spatial
+inhomogeneity, if not specified lat and lon part will be
+equally weighted, defaults to <cite>None</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array of shape (time, 3), aach row contains the
+inhomogeneity, asymmetry component, and entropy component
+for the corresponding time step in N.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.Grid.inhomogeneity_temporal">
+<span class="sig-name descname"><span class="pre">inhomogeneity_temporal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.Grid.inhomogeneity_temporal" title="Permalink to this definition"></a></dt>
+<dd><p>Return the temporal inhomogeneity of the data using
+<a class="reference internal" href="spatio_temporal.html#dlmhelper.spatio_temporal.inhomogeneity_temporal" title="dlmhelper.spatio_temporal.inhomogeneity_temporal"><code class="xref py py-func docutils literal notranslate"><span class="pre">dlmhelper.spatio_temporal.inhomogeneity_temporal()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of temporal homogeneity values at each grid point,
+with shape (lat, lon, 3).
+The last dimension contains the temporal inhomogeneity, 
+asymmetry component, and entropy component.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray:</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.Grid.to_TimeSeries">
+<span class="sig-name descname"><span class="pre">to_TimeSeries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zonal_avg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.Grid.to_TimeSeries" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a TimeSeries object from the gridded data
+by calculating the area-weighted average.
+If <cite>zonal_avg=True</cite> the data is first averaged over the
+longitudes and only then over the latitudes. This can help
+with the sampling bias in certain cases (e.g. if the data
+represents an atmospheric trace gas which is zonally 
+well-mixed).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>zonal_avg</strong> (<em>bool</em>) – Whether to average zonally first</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>TimeSeries object from the data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#dlmhelper.data.TimeSeries" title="dlmhelper.data.TimeSeries">TimeSeries</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dlmhelper.data.TimeSeries">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dlmhelper.data.</span></span><span class="sig-name descname"><span class="pre">TimeSeries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'day'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time64</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime64</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">numpy.datetime64('1970-01-01')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.TimeSeries" title="Permalink to this definition"></a></dt>
+<dd><p>This class acts as a container for timeseries data.
+When creating a TimeSeries object either <cite>time</cite> or <cite>time64</cite>
+AND <cite>time_unit</cite> and <cite>reference_time</cite> has to be specified.</p>
+<p>The data is then automatically sorted and missing time steps
+of <cite>time_unit</cite> are added to the arrays (e.g. for daily data all
+missing days are added, if <cite>time_unit=hours</cite> all missing hours are
+added) and filled with NaN’s.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>np.ndarray</em>) – The timeseries data of shape (time)</p></li>
+<li><p><strong>time</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – Time values corresponding to <cite>time_unit</cite> since
+<cite>reference_time</cite> of shape (time)</p></li>
+<li><p><strong>time_unit</strong> (<em>str</em>) – Unit of the values from <cite>time</cite>.
+Possible values are listed in <code class="xref py py-data docutils literal notranslate"><span class="pre">dlmhelper.TIME_ALIASES</span></code></p></li>
+<li><p><strong>reference_time</strong> (<em>np.datetime64</em><em>, </em><em>optional</em>) – Reference time for the values from
+time array, defaults to Unix-epoch</p></li>
+<li><p><strong>error</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – Errors for the timeseries data
+of shape (time)</p></li>
+<li><p><strong>N</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – Number of datapoints averaged for each
+timestep of shape (time)</p></li>
+<li><p><strong>product_type</strong> (<em>str</em><em>, </em><em>optional</em>) – Identifier of the data used</p></li>
+<li><p><strong>grid_dim</strong> (<em>dict</em><em>, </em><em>optional</em>) – Dimensions of the averaged
+area, can be created with <code class="xref py py-func docutils literal notranslate"><span class="pre">dlmhelper.data.grid_dim()</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.TimeSeries.load">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.TimeSeries.load" title="Permalink to this definition"></a></dt>
+<dd><p>Load TimeSeries object from .json</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – path to .json file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>TimeSeries object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#dlmhelper.data.TimeSeries" title="dlmhelper.data.TimeSeries">TimeSeries</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.TimeSeries.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.TimeSeries.plot" title="Permalink to this definition"></a></dt>
+<dd><p>Plot the time series. If <cite>ax</cite> is not specified, create a
+new figure. Returns the figure and axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ax</strong> (<em>matplotlib.axes</em><em>, </em><em>optional</em>) – (Optional) The axis the plot should be drawn on,
+defaults to None</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The axis and figure</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matplotlib.axes, matlotlib.figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dlmhelper.data.TimeSeries.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.data.TimeSeries.save" title="Permalink to this definition"></a></dt>
+<dd><p>Save TimeSeries object as .json
+Filename will be ‘TimeSeries_fname.json’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Path to .json file</p></li>
+<li><p><strong>fname</strong> (<em>str</em>) – fname</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dlmhelper.data.get_grid_dim">
+<span class="sig-prename descclassname"><span class="pre">dlmhelper.data.</span></span><span class="sig-name descname"><span class="pre">get_grid_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lat_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#dlmhelper.data.get_grid_dim" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a dictionary containing the specified grid dimensions.
+Used by various functions in this package.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lat_min</strong> (<em>float</em>) – Minimum latitude</p></li>
+<li><p><strong>lat_max</strong> (<em>float</em>) – Maximum latitude</p></li>
+<li><p><strong>lon_min</strong> (<em>float</em>) – Minimum longitude</p></li>
+<li><p><strong>lon_max</strong> (<em>float</em>) – Maximum longitude</p></li>
+<li><p><strong>lat_step</strong> (<em>float</em>) – Latitude step-size</p></li>
+<li><p><strong>lon_step</strong> – Longitude step-size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tools.html" class="btn btn-neutral float-right" title="tools.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jonas Hachmeister.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

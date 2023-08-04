@@ -369,6 +369,31 @@ class TimeSeries:
             f.write(s)
             if verbose>=1:
                 print("Saved data at:", cpath)
+                
+                
+    def plot(self, ax=None):
+        """
+        Plot the time series. If `ax` is not specified, create a
+        new figure. Returns the figure and axis.
+
+        :param ax: (Optional) The axis the plot should be drawn on,
+            defaults to None
+        :type ax: matplotlib.axes, optional
+        :returns: The axis and figure
+        :rtype: matplotlib.axes, matlotlib.figure
+        """
+        if self.time64 is not None:
+            time = self.time64
+        else:
+            time = self.time
+
+        if ax is None: fig, ax = plt.subplots()
+
+        ax.scatter(time, self.data,color=C4, marker='.')
+
+        ax.text(0.05,0.9,f"{self.product_type}",transform=ax.transAxes)
+        ax.tick_params(axis='y', labelrotation=45)
+        return ax.get_figure(), ax
 
 @dataclass
 class Grid:

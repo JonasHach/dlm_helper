@@ -3,7 +3,7 @@ This package includes functions and custom data types to help with performing an
 
 The initial version of this code was developed for the analysis performed in 'Zonal variability of methane trends derived from satellite data' (Hachmeister et al., 2023 ; DOI outstanding).
 
-This package is also used by the supplementary example code provided for the above mentioned paper, available at [Zenodo](http://www.doi.org/10.5281/zenodo.8178927)
+Version v0.1.0 of this package is also used by the supplementary example code provided for the above mentioned paper, available at [Zenodo](http://www.doi.org/10.5281/zenodo.8178927)
 
 
 ## Requirements
@@ -19,9 +19,5 @@ TODO
 
 ## Usage
 
-TODO
-
-## Contributing
-
-TODO
+Look at the Nile or Manua Loa example from the examples folder for a basic introduction for now.
 

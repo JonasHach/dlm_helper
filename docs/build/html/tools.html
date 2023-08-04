@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tools.py &mdash; dlmhelper 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="spatio_temporal.py" href="spatio_temporal.html" />
+    <link rel="prev" title="data.py" href="data.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            dlmhelper
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">data.py</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">tools.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dlmhelper.tools.annual_level_increase"><code class="docutils literal notranslate"><span class="pre">annual_level_increase()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dlmhelper.tools.cv_dlm_ensemble"><code class="docutils literal notranslate"><span class="pre">cv_dlm_ensemble()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dlmhelper.tools.dlm_ensemble"><code class="docutils literal notranslate"><span class="pre">dlm_ensemble()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dlmhelper.tools.dlm_fit"><code class="docutils literal notranslate"><span class="pre">dlm_fit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dlmhelper.tools.mean_level_from_dates"><code class="docutils literal notranslate"><span class="pre">mean_level_from_dates()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dlmhelper.tools.model_selection_bias_ALI"><code class="docutils literal notranslate"><span class="pre">model_selection_bias_ALI()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dlmhelper.tools.model_selection_bias_trend"><code class="docutils literal notranslate"><span class="pre">model_selection_bias_trend()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="spatio_temporal.html">spatio_temporal.py</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">dlmhelper</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">tools.py</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tools.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-dlmhelper.tools">
+<span id="tools-py"></span><h1>tools.py<a class="headerlink" href="#module-dlmhelper.tools" title="Permalink to this heading"></a></h1>
+<p>This module provides functions to perform dynamic linear model
+fits and for the evaluation of the results.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="dlmhelper.tools.annual_level_increase">
+<span class="sig-prename descclassname"><span class="pre">dlmhelper.tools.</span></span><span class="sig-name descname"><span class="pre">annual_level_increase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="data.html#dlmhelper.data.DLMResult" title="dlmhelper.data.DLMResult"><span class="pre">DLMResult</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">timedelta64</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">numpy.timedelta64(1,</span> <span class="pre">'D')</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dlmhelper.tools.annual_level_increase" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate annual increase in level increase between <cite>year</cite> and <cite>year+1</cite> 
+for a given DLMResult object. Returns increase and corresponding error.
+Uses times from DLMResult object closest to ‘year-01-01’ and ‘year+1-12-31’
+within given tolerance for the calculation. The tolerance defaults to one day.
+Returns <cite>(None, None)</cite> if no times fall within tolerance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<a class="reference internal" href="data.html#dlmhelper.data.DLMResult" title="dlmhelper.data.DLMResult"><em>DLMResult</em></a>) – DLMResult object used for calculation</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – Year</p></li>
+<li><p><strong>tolerance</strong> (<em>np.timedelta64</em>) – Tolerance</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple[float, float]: a tuple containing the annual increase and
+standard deviation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dlmhelper.tools.cv_dlm_ensemble">
+<span class="sig-prename descclassname"><span class="pre">dlmhelper.tools.</span></span><span class="sig-name descname"><span class="pre">cv_dlm_ensemble</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="data.html#dlmhelper.data.TimeSeries" title="dlmhelper.data.TimeSeries"><span class="pre">TimeSeries</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[True]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[False]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[True]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_trend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[True]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seasonal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[True]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seasonal_period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[[365]]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seasonal_harmonics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[[[1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4]]]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_seasonal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[[[True,</span> <span class="pre">False]]]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoregressive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">irregular</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[False,</span> <span class="pre">True]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#dlmhelper.tools.cv_dlm_ensemble" title="Permalink to this definition"></a></dt>
+<dd><p>Performs cross validation using the specified number of <cite>folds</cite> and
+calculates the average mean squated error (AMSE) for all configurations.</p>
+<p>Returns a dictionary with keys corresponding to the model configurations
+gained by <code class="xref py py-func docutils literal notranslate"><span class="pre">dlmhelper.dlm_data.DLMResult.name_from_spec()</span></code> and the
+AMSE as values.</p>
+<p>See <code class="xref py py-func docutils literal notranslate"><span class="pre">dlmhelper.dlm_helper.dlm_ensemble()</span></code> for information
+on the parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeseries</strong> (<a class="reference internal" href="data.html#dlmhelper.data.TimeSeries" title="dlmhelper.data.TimeSeries"><em>TimeSeries</em></a>) – TimeSeries object do be fitted</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Identifier for the DLMResult object</p></li>
+<li><p><strong>level</strong> (<em>List</em><em>[</em><em>bool</em><em>]</em>) – Whether to include a level component, defaults to [True]</p></li>
+<li><p><strong>variable_level</strong> (<em>List</em><em>[</em><em>bool</em><em>]</em>) – Wheter to allow the level component to vary,
+defaults to [False]</p></li>
+<li><p><strong>trend</strong> (<em>List</em><em>[</em><em>bool</em><em>]</em>) – Whether to include a trend component, defaults to [True]</p></li>
+<li><p><strong>variable_trend</strong> (<em>List</em><em>[</em><em>bool</em><em>]</em>) – Whether to allow the trend component to vary,
+defaults to [True]</p></li>
+<li><p><strong>seasonal</strong> (<em>List</em><em>[</em><em>bool</em><em>]</em>) – Whether to include a seasonal component,
+defaults to [True]</p></li>
+<li><p><strong>seasonal_period</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em><em>]</em>) – List of configurations of seasonal components.
+Each element is a list containing the periods of the seasonal 
+components, defaults to [[365]]</p></li>
+<li><p><strong>seasonal_harmonics</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em><em>]</em>) – List harmonics to try for the corresponding
+seasonal components. For each element of seasonal_period this 
+should include a list of harmonics to try, defaults to [[[1,2,3,4]]]</p></li>
+<li><p><strong>variable_seasonal</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>List</em><em>[</em><em>bool</em><em>]</em><em>]</em><em>]</em>) – Whether a seasonal component is allowed to vary.
+For each element of seasonal_period this should include a list of 
+options, defaults to [[[True, False]]]</p></li>
+<li><p><strong>autoregressive</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – List of autoregressive components to try, 
+the integer determines the order of the autoregressive component,
+defaults to [1]</p></li>
+<li><p><strong>irregular</strong> (<em>List</em><em>[</em><em>bool</em><em>]</em>) – Whether to include an additional Gaussian noise,
+defaults to [True, False]</p></li>
+<li><p><strong>scores</strong> (<em>dict</em>) – A dictionary containing scores for different 
+configurations. Currently used to pass the results of 
+cross validation to the final ensemble fit, defaults to None</p></li>
+<li><p><strong>folds</strong> (<em>int</em>) – Number of folds to use for cross validation,
+defaults to 5</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – Determines the amount of outpout, 0 means no output
+and 2 means maximum outout, defaults to 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the AMSE for each model config</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dlmhelper.tools.dlm_ensemble">
+<span class="sig-prename descclassname"><span class="pre">dlmhelper.tools.</span></span><span class="sig-name descname"><span class="pre">dlm_ensemble</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="data.html#dlmhelper.data.TimeSeries" title="dlmhelper.data.TimeSeries"><span class="pre">TimeSeries</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[True]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[False]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[True]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_trend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[True]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seasonal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[True]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seasonal_period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[[365]]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seasonal_harmonics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[[[1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4]]]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_seasonal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[[[True,</span> <span class="pre">False]]]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoregressive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">irregular</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[True,</span> <span class="pre">False]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="data.html#dlmhelper.data.DLMResultList" title="dlmhelper.data.DLMResultList"><span class="pre">DLMResultList</span></a></span></span><a class="headerlink" href="#dlmhelper.tools.dlm_ensemble" title="Permalink to this definition"></a></dt>
+<dd><p>Fits an ensemble of Dynamic Linear Models to a TimeSeries object and
+returns a DLMResultList object.</p>
+<p>For all keyword arguments (except scores) a list or nested list is
+used to determine the configurations used in the ensemble.</p>
+<p>For most parameters a boolean List is used. For example
+variable_level = [True, False] would include model configurations
+with and without a variable level in the ensemble. The possible values
+are therefore [True], [False], [True, False].</p>
+<p>If seasonal components are included in the ensemble they can be specified
+using nested lists. Each configuration can included multiple seasonal
+components</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeseries</strong> (<a class="reference internal" href="data.html#dlmhelper.data.TimeSeries" title="dlmhelper.data.TimeSeries"><em>TimeSeries</em></a>) – TimeSeries object do be fitted</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Identifier for the DLMResult object</p></li>
+<li><p><strong>level</strong> (<em>List</em><em>[</em><em>bool</em><em>]</em>) – Whether to include a level component, defaults to [True]</p></li>
+<li><p><strong>variable_level</strong> (<em>List</em><em>[</em><em>bool</em><em>]</em>) – Wheter to allow the level component to vary,
+defaults to [False]</p></li>
+<li><p><strong>trend</strong> (<em>List</em><em>[</em><em>bool</em><em>]</em>) – Whether to include a trend component, defaults to [True]</p></li>
+<li><p><strong>variable_trend</strong> (<em>List</em><em>[</em><em>bool</em><em>]</em>) – Whether to allow the trend component to vary,
+defaults to [True]</p></li>
+<li><p><strong>seasonal</strong> (<em>List</em><em>[</em><em>bool</em><em>]</em>) – Whether to include a seasonal component,
+defaults to [True]</p></li>
+<li><p><strong>seasonal_period</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em><em>]</em>) – List of configurations of seasonal components.
+Each element is a list containing the periods of the seasonal 
+components, defaults to [[365]]</p></li>
+<li><p><strong>seasonal_harmonics</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em><em>]</em>) – List harmonics to try for the corresponding
+seasonal components. For each element of seasonal_period this 
+should include a list of harmonics to try, defaults to [[[1,2,3,4]]]</p></li>
+<li><p><strong>variable_seasonal</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>List</em><em>[</em><em>bool</em><em>]</em><em>]</em><em>]</em>) – Whether a seasonal component is allowed to vary.
+For each element of seasonal_period this should include a list of 
+options, defaults to [[[True, False]]]</p></li>
+<li><p><strong>autoregressive</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – List of autoregressive components to try, 
+the integer determines the order of the autoregressive component,
+defaults to [1]</p></li>
+<li><p><strong>irregular</strong> (<em>List</em><em>[</em><em>bool</em><em>]</em>) – Whether to include an additional Gaussian noise,
+defaults to [True, False]</p></li>
+<li><p><strong>scores</strong> (<em>dict</em>) – A dictionary containing scores for different 
+configurations. Currently used to pass the results of 
+cross validation to the final ensemble fit, defaults to None</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – Determines the amount of outpout, 0 means no output
+and 2 means maximum outout, defaults to 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object containing multiple DLMResult objects</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="data.html#dlmhelper.data.DLMResultList" title="dlmhelper.data.DLMResultList">DLMResultList</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dlmhelper.tools.dlm_fit">
+<span class="sig-prename descclassname"><span class="pre">dlmhelper.tools.</span></span><span class="sig-name descname"><span class="pre">dlm_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="data.html#dlmhelper.data.TimeSeries" title="dlmhelper.data.TimeSeries"><span class="pre">TimeSeries</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_trend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seasonal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seasonal_period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[365]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seasonal_harmonics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[4]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_seasonal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[False]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoregressive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">irregular</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="data.html#dlmhelper.data.DLMResult" title="dlmhelper.data.DLMResult"><span class="pre">DLMResult</span></a></span></span><a class="headerlink" href="#dlmhelper.tools.dlm_fit" title="Permalink to this definition"></a></dt>
+<dd><p>Performs a dynamic linear model fit on the given TimeSeries object and
+returns a DLMResult object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeseries</strong> (<a class="reference internal" href="data.html#dlmhelper.data.TimeSeries" title="dlmhelper.data.TimeSeries"><em>TimeSeries</em></a>) – TimeSeries object do be fitted</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Identifier for the DLMResult object</p></li>
+<li><p><strong>level</strong> (<em>bool</em>) – Whether to include a level component,
+defaults to True</p></li>
+<li><p><strong>variable_level</strong> (<em>bool</em>) – Whether to allow the level component
+to vary, defaults to False</p></li>
+<li><p><strong>trend</strong> (<em>bool</em>) – Whether to include a trend (i.e. changing level),
+defaults to True</p></li>
+<li><p><strong>variable_trend</strong> (<em>bool</em>) – Whether to allow the trend component
+to vary, defaults to True</p></li>
+<li><p><strong>seasonal</strong> (<em>bool</em>) – Whether to include seasonal components,
+defaults to True</p></li>
+<li><p><strong>seasonal_period</strong> (<em>List</em><em>[</em><em>bool</em><em>]</em>) – List of periods for the seasonal
+components, defaults to [365]</p></li>
+<li><p><strong>seasonal_harmonics</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – Number of harmonics to use for the
+seasonal components, defaults to [4]</p></li>
+<li><p><strong>variable_seasonal</strong> (<em>List</em><em>[</em><em>bool</em><em>]</em>) – Whether the seasonal componets are
+allowed to vary, defaults to [False]</p></li>
+<li><p><strong>autoregressive</strong> (<em>int</em><em> | </em><em>None</em>) – Determines the order of the
+autoregressive component, use <cite>None</cite> to not include,
+defaults to 1</p></li>
+<li><p><strong>irregular</strong> (<em>bool</em>) – Whether to a Gaussian noise term,
+defaults to True</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – Determines the amount of outpout, 0 means no output
+and 2 means maximum outout, defaults to 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A DLMResult object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="data.html#dlmhelper.data.DLMResult" title="dlmhelper.data.DLMResult">DLMResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dlmhelper.tools.mean_level_from_dates">
+<span class="sig-prename descclassname"><span class="pre">dlmhelper.tools.</span></span><span class="sig-name descname"><span class="pre">mean_level_from_dates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="data.html#dlmhelper.data.DLMResult" title="dlmhelper.data.DLMResult"><span class="pre">DLMResult</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">t1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">timedelta64</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">numpy.timedelta64(1,</span> <span class="pre">'D')</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#dlmhelper.tools.mean_level_from_dates" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the mean level between the two given dates. 
+Uses times from DLMResult object closest to ‘t1’ and ‘t2’ within 
+given tolerance for the calculation. The tolerance defaults to one day.
+Returns <cite>None</cite> if no times fall within tolerance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<a class="reference internal" href="data.html#dlmhelper.data.DLMResult" title="dlmhelper.data.DLMResult"><em>DLMResult</em></a>) – DLMResult object used for calculation</p></li>
+<li><p><strong>t1</strong> (<em>np.datetime64</em>) – Date</p></li>
+<li><p><strong>t2</strong> (<em>np.datetime64</em>) – Date</p></li>
+<li><p><strong>tolerance</strong> (<em>np.timedelta64</em>) – Tolerance</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>float: Mean of the values in X that fall within the specified date range.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dlmhelper.tools.model_selection_bias_ALI">
+<span class="sig-prename descclassname"><span class="pre">dlmhelper.tools.</span></span><span class="sig-name descname"><span class="pre">model_selection_bias_ALI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="data.html#dlmhelper.data.DLMResultList" title="dlmhelper.data.DLMResultList"><span class="pre">DLMResultList</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'aic'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.tools.model_selection_bias_ALI" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the model selection bias for Dynamic Linear Models results.</p>
+<p>This function computes the model selection bias for ALIs for the given
+DLMResultList. The bias is calculated by computing the weighted variance
+between the average fit ALI and each individual fit ALI for each year.
+The bias is calculated using all models whose metric is within 
+the specified percentile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>results</strong> (<a class="reference internal" href="data.html#dlmhelper.data.DLMResultList" title="dlmhelper.data.DLMResultList"><em>DLMResultList</em></a>) – DLMResultList</p></li>
+<li><p><strong>years</strong> (<em>ArrayLike</em>) – Array of years for which the bias is calculated</p></li>
+<li><p><strong>percentile</strong> (<em>float</em>) – Percentile of models to use for comparison</p></li>
+<li><p><strong>metric</strong> (<em>str</em>) – Metric to use for comparison of models, defaults
+to ‘aic’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray: An array containing the model selection bias
+for each year specified in the <cite>years</cite> array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dlmhelper.tools.model_selection_bias_trend">
+<span class="sig-prename descclassname"><span class="pre">dlmhelper.tools.</span></span><span class="sig-name descname"><span class="pre">model_selection_bias_trend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="data.html#dlmhelper.data.DLMResultList" title="dlmhelper.data.DLMResultList"><span class="pre">DLMResultList</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">t1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime64</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime64</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'aic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">timedelta64</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlmhelper.tools.model_selection_bias_trend" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the model selection bias for Dynamic Linear Models (DLM) results.</p>
+<p>This function computes the model selection bias for growth rates for the given DLMResultsList. The bias is calculated by
+computing the weighted variance between the average fit trend (growth rate) and each individual fit trend.
+The bias is calculated using all models whose metric is within the specified percentile. If <cite>t1</cite> and/or <cite>t2</cite>
+are specified the times will be used to determine the start and end date for the comparison.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>results</strong> (<a class="reference internal" href="data.html#dlmhelper.data.DLMResultList" title="dlmhelper.data.DLMResultList"><em>DLMResultList</em></a>) – DLMResultList</p></li>
+<li><p><strong>t1</strong> (<em>np.datetime64</em>) – Date</p></li>
+<li><p><strong>t2</strong> (<em>np.datetime64</em>) – Date</p></li>
+<li><p><strong>tolerance</strong> (<em>np.timedelta64</em>) – Tolerance</p></li>
+<li><p><strong>percentile</strong> (<em>float</em>) – Percentile of models to use for comparison</p></li>
+<li><p><strong>metric</strong> (<em>str</em>) – Metric to use for comparison of models, defaults
+to ‘aic’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray: An array containing the model selection bias
+for each year specified in the <cite>years</cite> array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="data.html" class="btn btn-neutral float-left" title="data.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="spatio_temporal.html" class="btn btn-neutral float-right" title="spatio_temporal.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jonas Hachmeister.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
