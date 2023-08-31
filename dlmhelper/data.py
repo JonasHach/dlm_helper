@@ -2,13 +2,10 @@
 
 """This module provides two classes which are used to handle data from DLM results.
 
-- Grid: Container for gridded data which can be easily converted to
-    a TimeSeries object
-- TimeSeries: Container for timeseries data which is used for all
-    dlm fit functions
+- Grid: Container for gridded data which can be easily converted to a TimeSeries object
+- TimeSeries: Container for timeseries data which is used for all dlm fit functions
 - DLMResult: Handles single results
-- DLMResultList: Acts as a container for all DLMResults generated for a
-    given time series
+- DLMResultList: Acts as a container for all DLMResults generated for a given time series
 
 
 """
@@ -35,7 +32,6 @@ import dlmhelper.spatio_temporal
 from statsmodels.tsa.statespace.structural import UnobservedComponentsResults
 
 from dlmhelper import *
-
 
 def _to_datetime64(time: ArrayLike, time_unit: str, reference_time: Union[np.datetime64,datetime.datetime]) -> np.ndarray:
     """

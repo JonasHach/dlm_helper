@@ -83,7 +83,7 @@ def _area_weighted_average(data: np.ndarray, error: np.ndarray, lats: np.ndarray
             wweights_zonal[:,t] = weights_zonal[:,t]
         
     ma_weights = wweights
-    ma_weights[np.isnan(data) | np.isnan(error)] = 0
+    ma_weights[np.isnan(data) | np.isnan(error)] = np.nan
     
     ma_weights_zonal = wweights_zonal
     
