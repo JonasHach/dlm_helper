@@ -755,7 +755,9 @@ class DLMResult:
             ar_cov = ar = np.zeros(size)
             
         
-        resid = res.resid
+        #resid = res.resid <- this seems to be different from the line below
+        # TODO: find out why, but this works for now
+        resid = timeseries.data - (lvl+np.sum(seas, axis=1)+ar)
         spec = res.specification
         
         ex_score = np.nan
