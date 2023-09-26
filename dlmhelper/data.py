@@ -659,9 +659,6 @@ class DLMResult:
     :type ar_cov: np.ndarray
     :param resid: Residual of shape (time)
     :type resi: np.ndarray
-    :param _loglikeburn: 
-        UnobservedComponentsResults.loglikelihood_burn
-    :type _loglikeburn: int
     """
     name: str 
     timeseries: TimeSeries 
@@ -679,11 +676,7 @@ class DLMResult:
     ar: np.ndarray
     ar_cov: np.ndarray
     resid: np.ndarray
-    
-    _loglikeburn: int
-    
-    
-    
+
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
@@ -768,24 +761,21 @@ class DLMResult:
         
         _dicts = [dict(zip(["param", "std_err"], [res.params[i], np.sqrt(np.diag(res.cov_params()))[i]])) for i in range(res.params.shape[0])]
         dlm_fit_params = dict(zip(res.param_names, _dicts))
-        
-        _nb = res.loglikelihood_burn
-        
-        
+
         dlm_fit_rating = {
             "converged": res.mle_retvals['converged'],
             "aic": res.aic,
             "ll": res.llf,
-            "ssr": np.nansum(res.resid[_nb:]**2),
-            "mse": np.nanmean(res.resid[_nb:]**2),
-            "cov_level": np.nanmean(res.level['smoothed_cov'][_nb:]),
-            "cov_trend": np.nanmean(res.trend['smoothed_cov'][_nb:]),
-            "cov_seas": np.nanmean(np.sum(seas_cov,axis=1)[_nb:]),
-            "cov_ar": np.nanmean(ar_cov[_nb:]),
+            "ssr": np.nansum(resid**2),
+            "mse": np.nanmean(resid**2),
+            "cov_level": np.nanmean(res.level['smoothed_cov']),
+            "cov_trend": np.nanmean(res.trend['smoothed_cov']),
+            "cov_seas": np.nanmean(np.sum(seas_cov,axis=1)),
+            "cov_ar": np.nanmean(ar_cov),
             "cv_amse": ex_score
         }
         
-        return cls(name, timeseries,spec,dlm_fit_params,dlm_fit_rating,lvl, lvl_cov, trend, trend_cov, seas, seas_cov, ar, ar_cov, resid,_nb)
+        return cls(name, timeseries,spec,dlm_fit_params,dlm_fit_rating,lvl, lvl_cov, trend, trend_cov, seas, seas_cov, ar, ar_cov, resid)
         
     @classmethod
     def load(cls,path):
