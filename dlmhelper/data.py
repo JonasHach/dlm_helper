@@ -657,7 +657,8 @@ class DLMResult:
     :param ar_cov: covariance of auto-regressive component of
         shape (time)
     :type ar_cov: np.ndarray
-    :param resid: Residual of shape (time)
+    :param resid: Residual of shape (time). The residual is defined
+        as the difference between the data and the fit (level+seas+AR)
     :type resi: np.ndarray
     """
     name: str 
@@ -749,7 +750,12 @@ class DLMResult:
             
         
         #resid = res.resid <- this seems to be different from the line below
-        # TODO: find out why, but this works for now
+        #The residual from the statsmodels package seems to be calculated using:
+        # data - res.fittedvalues
+        # The fittedvalues do not correspond to the sum of the model components
+        # but are close to the filtered_results, this might be a bug in the statsmodels
+        # package. 
+        
         resid = timeseries.data - (lvl+np.sum(seas, axis=1)+ar)
         spec = res.specification
         
