@@ -44,6 +44,8 @@ def _area_weighted_average(data: np.ndarray, error: np.ndarray, lats: np.ndarray
     :rtype: Tuple[np.ndarray, np.ndarray]
     """
     
+    if error is None:
+            error = np.ones_like(data)
     
     if lats.shape[0] == 1:
         return np.nanmean(data, axis=(0, 1)), np.nanmean(error, axis=(0, 1))
