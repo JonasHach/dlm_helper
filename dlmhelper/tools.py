@@ -531,7 +531,7 @@ def mean_level_from_dates(data: DLMResult, t1: np.datetime64, t2: np.datetime64,
     idx2 = _get_idx_at_time(data.timeseries.time64, t2, tolerance=tolerance)
     
     if idx1 is not None and idx2 is not None:
-        return np.mean(data.timeseries.level[idx1:idx2])
+        return np.mean(data.level[idx1:idx2])
     else:
         return None
     
