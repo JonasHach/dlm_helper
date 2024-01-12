@@ -534,6 +534,34 @@ def mean_level_from_dates(data: DLMResult, t1: np.datetime64, t2: np.datetime64,
         return np.mean(data.level[idx1:idx2])
     else:
         return None
+
+def mean_level_cov_from_dates(data: DLMResult, t1: np.datetime64, t2: np.datetime64, 
+                          tolerance: np.timedelta64 = np.timedelta64(1,'D') ) -> float:
+    """
+    Returns the mean level covariance between the two given dates. 
+    Uses times from DLMResult object closest to 't1' and 't2' within 
+    given tolerance for the calculation. The tolerance defaults to one day.
+    Returns `None` if no times fall within tolerance.
+
+    :param data: DLMResult object used for calculation
+    :type data: DLMResult
+    :param t1: Date
+    :type t1: np.datetime64
+    :param t2: Date
+    :type t2: np.datetime64
+    :param tolerance: Tolerance
+    :type tolerance: np.timedelta64
+    :returns: float: Mean of the values in X that fall within the specified date range.
+
+    """
+    
+    idx1 = _get_idx_at_time(data.timeseries.time64, t1, tolerance=tolerance)
+    idx2 = _get_idx_at_time(data.timeseries.time64, t2, tolerance=tolerance)
+    
+    if idx1 is not None and idx2 is not None:
+        return np.mean(data.level_cov[idx1:idx2])
+    else:
+        return None
     
 
 def _get_idx_at_time(times,time, tolerance=np.timedelta64(1,'D')):
