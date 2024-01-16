@@ -204,6 +204,9 @@ def cv_dlm_ensemble(
     
     ensembles = []
     for _fold, _train in data:
+        
+        if np.all(np.isnan(_train)): 
+            continue #skip empty folds
         timeseries.data = _train
         rlist = dlm_ensemble(timeseries, "", level, variable_level, trend,
                              variable_trend, seasonal, seasonal_period,
@@ -217,6 +220,8 @@ def cv_dlm_ensemble(
             _fold, _train = data[i]
             _fit = _r.level+_r.ar+np.sum(_r.seas,axis=1)
             _d = (_fit -_fold)
+            if np.all(np.isnan(_d)):
+                continue
             _mse=(1/_d[~np.isnan(_d)].size)*np.nansum(_d**2)
             _name = _r.name_from_spec()
 
