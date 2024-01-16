@@ -91,7 +91,7 @@ def _area_weighted_average(data: np.ndarray, error: np.ndarray, lats: np.ndarray
     
     with warnings.catch_warnings():    
         warnings.filterwarnings(action='ignore', message='Mean of empty slice')
-        ma_weights_zonal[np.isnan(np.nanmean(data,axis=1)) | np.isnan(np.nanmean(error,axis=1))] = 0
+        ma_weights_zonal[np.isnan(np.nanmean(data,axis=1)) | np.isnan(np.nanmean(error,axis=1))] = np.nan
     
 
     
