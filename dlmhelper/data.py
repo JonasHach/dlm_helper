@@ -428,14 +428,19 @@ class Grid:
         self.data = np.asarray(self.data)
         self.lat = np.asarray(self.lat)
         self.lon = np.asarray(self.lon)
-        
+
+        if self.time is None:
+            self.time = _datetime64_to_delta(self.time64,self.time_unit)
+        else:
+            self.time = np.asarray(self.time)
             
         if self.N is not None:
             self.N = np.asarray(self.N)
             
         if self.error is not None:
             self.error = np.asarray(self.error)
-            
+
+        
         if len(self.lat.shape)>1 or len(self.lon.shape)>1 or len(self.time.shape)>1:
             raise ValueError("lat, lon and time field need to be one-dimensional!")
             
@@ -462,10 +467,7 @@ class Grid:
             if not _is_grid_dim(self.grid_dim):
                 raise TypeError("grid_dim has the wrong structure. Use grid_dim function to initialize dict!")
        
-        if self.time is None:
-            self.time = _datetime64_to_delta(self.time64,self.time_unit)
-        else:
-            self.time = np.asarray(self.time)
+        
             
         #Sort gridded data and add missing days (filled with NaNs)    
         _t = self.time
@@ -603,6 +605,7 @@ class Grid:
         :returns: TimeSeries object from the data
         :rtype: TimeSeries
         """
+        
         avg_data, avg_error = dlmhelper.spatio_temporal._area_weighted_average(self.data, self.error, self.lat, self.lon, zonal_avg = zonal_avg)
         if self.N is not None: 
             avg_N = np.zeros(self.time.size)
