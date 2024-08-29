@@ -394,7 +394,8 @@ def dlm_ensemble(
 
 
 def model_selection_bias_ALI(results: DLMResultList, years: ArrayLike,
-                             percentile: float = 25, metric: str = "aic"):
+                             percentile: float = 25, metric: str = "aic",
+                            tolerance: np.timedelta64 = np.timedelta64(1,'D')):
     """
     Calculate the model selection bias for Dynamic Linear Models results.
     
@@ -413,8 +414,11 @@ def model_selection_bias_ALI(results: DLMResultList, years: ArrayLike,
     :param metric: Metric to use for comparison of models, defaults
         to 'aic'
     :type metric: str
+    :param tolerance: 
+    :type tolerance: np.timedelta64
     :returns: np.ndarray: An array containing the model selection bias
         for each year specified in the `years` array.
+    
 
     """
     
@@ -435,7 +439,7 @@ def model_selection_bias_ALI(results: DLMResultList, years: ArrayLike,
         ali = np.zeros_like(years,dtype=float)
         ali_std = np.zeros_like(years,dtype=float)
         for i, y in enumerate(years):
-            ali[i], ali_std[i] = annual_level_increase(_r, y)
+            ali[i], ali_std[i] = annual_level_increase(_r, y,tolerance = tolerance)
 
         ali_list.append(ali)
         ali_std_list.append(ali_std)
@@ -446,10 +450,10 @@ def model_selection_bias_ALI(results: DLMResultList, years: ArrayLike,
     ali = np.zeros_like(years,dtype=float)
     ali_std = np.zeros_like(years,dtype=float)
     for i, y in enumerate(years):
-            ali[i], ali_std[i] = annual_level_increase(results.get_best_result(sort=metric), y)
+            ali[i], ali_std[i] = annual_level_increase(results.get_best_result(sort=metric), y, tolerance = tolerance)
             
-    ali_avg = np.average(ali_list, axis=0)
-    ali_std_avg = np.std(ali_list, axis=0)
+    ali_avg = np.nanmean(ali_list, axis=0)
+    ali_std_avg = np.nanstd(ali_list, axis=0)
     return np.sqrt(np.average((ali_avg-ali_list)**2,weights=1/np.sqrt(ali_std_avg**2+ali_std_list**2),axis=0))
 
 
