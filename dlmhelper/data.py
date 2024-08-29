@@ -436,6 +436,7 @@ class Grid:
             
         if self.N is not None:
             self.N = np.asarray(self.N)
+            self.N[np.isnan(self.N)]=0
             
         if self.error is not None:
             self.error = np.asarray(self.error)
