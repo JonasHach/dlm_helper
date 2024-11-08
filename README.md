@@ -16,7 +16,7 @@ Version v0.1.0 of this package is also used by the supplementary example code pr
 
 ## Version
 
-v1.0.0b7
+v1.0.0b8
 
 ## Installation
 
